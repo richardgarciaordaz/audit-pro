@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UX Audit Pro - Get Professional UX/UI Audits in Minutes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Estilos para la animación de escritura en el input */
+        .typing-effect {
+            width: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 2s steps(30, end) forwards;
+        }
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        /* Animación de aparición suave */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Animación de carga */
+        .loader-dot {
+            animation: loader-bounce 1.4s infinite ease-in-out both;
+        }
+        .loader-dot:nth-child(1) { animation-delay: -0.32s; }
+        .loader-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes loader-bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-200 antialiased">
+
+    <div class="container mx-auto px-6 py-12 md:py-20 text-center">
+
+        <!-- Encabezado y Propuesta de Valor -->
+        <header class="max-w-3xl mx-auto mb-12">
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-500 mb-4">
+                Get Professional UX/UI Audits in Minutes, Not Hours
+            </h1>
+            <p class="text-lg md:text-xl text-slate-400">
+                AI-powered tool that saves 10+ hours of manual auditing and delivers actionable reports instantly.
+            </p>
+        </header>
+
+        <!-- Demo Interactiva -->
+        <main class="max-w-2xl mx-auto bg-slate-800/50 rounded-xl shadow-2xl shadow-blue-500/10 p-4 md:p-6 border border-slate-700">
+            <div id="demo-container" class="relative w-full h-80 md:h-96 overflow-hidden">
+
+                <!-- 1. Pantalla de Input -->
+                <div id="input-screen" class="absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 opacity-100">
+                    <div class="w-full max-w-md bg-slate-900 rounded-lg p-4 border border-slate-700">
+                        <div class="flex items-center space-x-1.5 mb-3">
+                            <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                            <span class="w-3 h-3 bg-yellow-400 rounded-full"></span>
+                            <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                        </div>
+                        <div class="bg-slate-800 rounded p-2 text-left text-sky-400 font-mono text-sm">
+                            <span id="typing-text"></span><span class="animate-ping">|</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-500 mt-4 text-sm">Enter a URL to start the audit</p>
+                </div>
+
+                <!-- 2. Pantalla de Carga -->
+                <div id="loading-screen" class="absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 opacity-0">
+                    <div class="flex space-x-2">
+                        <div class="loader-dot w-4 h-4 bg-blue-500 rounded-full"></div>
+                        <div class="loader-dot w-4 h-4 bg-blue-500 rounded-full"></div>
+                        <div class="loader-dot w-4 h-4 bg-blue-500 rounded-full"></div>
+                    </div>
+                    <p class="text-slate-400 mt-4">Analyzing your website...</p>
+                </div>
+
+                <!-- 3. Pantalla de Resultados -->
+                <div id="output-screen" class="absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 opacity-0 p-4">
+                    <div class="w-full text-left grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Scores -->
+                        <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+                            <h3 class="font-semibold mb-3 text-slate-300">Audit Score</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm">Performance</span>
+                                    <span class="font-bold text-lg text-green-400">78%</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm">Accessibility</span>
+                                    <span class="font-bold text-lg text-green-400">85%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Recomendaciones -->
+                        <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+                            <h3 class="font-semibold mb-3 text-slate-300">Top Recommendations</h3>
+                            <ul class="text-sm space-y-2 text-slate-400 list-disc list-inside">
+                                <li>Clarify headline value proposition.</li>
+                                <li>Improve CTA hierarchy.</li>
+                                <li>Ensure button style consistency.</li>
+                            </ul>
+                        </div>
+                        <!-- Mockup Antes y Después -->
+                        <div class="col-span-1 md:col-span-2 bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+                            <h3 class="font-semibold mb-3 text-slate-300">Visual Improvement Example</h3>
+                            <div class="flex justify-around items-center">
+                                <div class="text-center">
+                                    <p class="text-xs mb-2 text-slate-500">Before</p>
+                                    <button class="px-4 py-2 text-sm rounded-md bg-slate-600 text-slate-300 cursor-not-allowed">Learn More</button>
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                                <div class="text-center">
+                                    <p class="text-xs mb-2 text-slate-400">After</p>
+                                    <button class="px-5 py-2 text-sm font-semibold rounded-md bg-blue-600 text-white shadow-lg shadow-blue-500/30">Learn More</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Formulario de Lista de Espera -->
+        <section class="max-w-xl mx-auto mt-12">
+            <form id="waitlist-form">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <input type="email" id="email-input" required placeholder="your-email@company.com" class="w-full px-4 py-3 rounded-md bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-sky-500 focus:outline-none transition duration-200" />
+                    <button type="submit" class="w-full md:w-auto px-6 py-3 font-semibold rounded-md text-white bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-sky-500 transition-transform transform hover:scale-105">
+                        Join Early Access
+                    </button>
+                </div>
+            </form>
+            <div id="confirmation-message" class="hidden mt-4 px-4 py-3 rounded-md bg-green-500/10 text-green-400 border border-green-500/20">
+                Thanks for joining! We'll be in touch soon.
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Pie de Página -->
+    <footer class="text-center py-8 border-t border-slate-800 mt-12">
+        <p class="text-slate-500 text-sm">&copy; 2025 UX Audit Pro. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Elementos del DOM
+            const inputScreen = document.getElementById('input-screen');
+            const loadingScreen = document.getElementById('loading-screen');
+            const outputScreen = document.getElementById('output-screen');
+            const typingTextEl = document.getElementById('typing-text');
+
+            const waitlistForm = document.getElementById('waitlist-form');
+            const confirmationMessage = document.getElementById('confirmation-message');
+
+            const screens = [inputScreen, loadingScreen, outputScreen];
+            const urlToType = 'www.yourwebsite.com';
+            
+            // Lógica de la animación de la demo
+            let currentScreen = 0;
+
+            function switchScreen(nextScreenIndex) {
+                screens.forEach((screen, index) => {
+                    if (index === nextScreenIndex) {
+                        screen.style.opacity = '1';
+                        screen.classList.add('fade-in');
+                    } else {
+                        screen.style.opacity = '0';
+                        screen.classList.remove('fade-in');
+                    }
+                });
+                currentScreen = nextScreenIndex;
+            }
+
+            function typeEffect() {
+                let i = 0;
+                typingTextEl.innerHTML = '';
+                const typingInterval = setInterval(() => {
+                    if (i < urlToType.length) {
+                        typingTextEl.innerHTML += urlToType.charAt(i);
+                        i++;
+                    } else {
+                        clearInterval(typingInterval);
+                    }
+                }, 80);
+            }
+
+            function startDemoLoop() {
+                // 1. Mostrar Input
+                switchScreen(0);
+                typeEffect();
+
+                // 2. Transición a Carga
+                setTimeout(() => {
+                    switchScreen(1);
+                }, 3000); // Duración de la pantalla de input
+
+                // 3. Transición a Output
+                setTimeout(() => {
+                    switchScreen(2);
+                }, 5000); // Duración de la pantalla de carga
+
+                // 4. Reiniciar el loop
+                setTimeout(startDemoLoop, 10000); // Duración total del ciclo (3s + 2s + 5s)
+            }
+
+            // Iniciar la animación en loop
+            startDemoLoop();
+
+            // Lógica del formulario de la lista de espera
+            waitlistForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                waitlistForm.classList.add('hidden');
+                confirmationMessage.classList.remove('hidden');
+                confirmationMessage.classList.add('fade-in');
+            });
+        });
+    </script>
+</body>
+</html>
