@@ -21,7 +21,6 @@
             height: 100%;
             z-index: 0; 
         }
-        /* Nueva capa de degradado para la legibilidad del encabezado */
         #header-fade-overlay {
             position: fixed;
             top: 0;
@@ -30,14 +29,13 @@
             height: 100vh;
             background: radial-gradient(ellipse at 50% 0%, rgba(15, 23, 42, 0.95) 10%, rgba(15, 23, 42, 0) 70%);
             z-index: 1;
-            pointer-events: none; /* Permite hacer clic a través de la capa */
+            pointer-events: none;
             transition: opacity 0.3s ease-out;
         }
         .content-wrapper {
             position: relative;
-            z-index: 2; /* Asegura que el contenido esté por encima de la capa de degradado */
+            z-index: 2;
         }
-        /* Estilos para la animación de escritura en el input */
         .typing-effect {
             width: 0;
             overflow: hidden;
@@ -48,7 +46,6 @@
             from { width: 0 }
             to { width: 100% }
         }
-        /* Animación de aparición suave */
         .fade-in {
             animation: fadeIn 0.5s ease-in-out forwards;
         }
@@ -56,7 +53,6 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* Animación de carga */
         .loader-dot {
             animation: loader-bounce 1.4s infinite ease-in-out both;
         }
@@ -66,10 +62,9 @@
             0%, 80%, 100% { transform: scale(0); }
             40% { transform: scale(1.0); }
         }
-        /* Scrollbar personalizado para navegadores modernos */
         .custom-scrollbar {
             scrollbar-width: thin;
-            scrollbar-color: rgb(71 85 105) transparent; /* slate-600 */
+            scrollbar-color: rgb(71 85 105) transparent;
         }
         .custom-scrollbar::-webkit-scrollbar {
             width: 8px;
@@ -78,7 +73,7 @@
             background: transparent;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background-color: rgb(71 85 105); /* slate-600 */
+            background-color: rgb(71 85 105);
             border-radius: 10px;
             border: 2px solid transparent;
             background-clip: content-box;
@@ -106,8 +101,6 @@
             <!-- Demo Interactiva -->
             <main class="max-w-2xl mx-auto bg-slate-800/50 rounded-xl shadow-2xl shadow-blue-500/10 p-4 md:p-6 border border-slate-700 backdrop-blur-sm">
                 <div id="demo-container" class="relative w-full h-96 overflow-hidden">
-
-                    <!-- 1. Pantalla de Input -->
                     <div id="input-screen" class="absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 opacity-100">
                         <div class="w-full max-w-md bg-slate-900 rounded-lg p-4 border border-slate-700">
                             <div class="flex items-center space-x-1.5 mb-3">
@@ -121,8 +114,6 @@
                         </div>
                         <p class="text-slate-500 mt-4 text-sm">Enter a URL to start the audit</p>
                     </div>
-
-                    <!-- 2. Pantalla de Carga -->
                     <div id="loading-screen" class="absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 opacity-0">
                         <div class="flex space-x-2">
                             <div class="loader-dot w-4 h-4 bg-blue-500 rounded-full"></div>
@@ -131,25 +122,15 @@
                         </div>
                         <p class="text-slate-400 mt-4">Analyzing your website...</p>
                     </div>
-
-                    <!-- 3. Pantalla de Resultados -->
                     <div id="output-screen" class="absolute inset-0 flex flex-col items-center transition-opacity duration-500 opacity-0 p-4 overflow-y-auto custom-scrollbar">
                         <div class="w-full text-left grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- Scores -->
                             <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
                                 <h3 class="font-semibold mb-3 text-slate-300">Audit Score</h3>
                                 <div class="space-y-3">
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-sm">Performance</span>
-                                        <span class="font-bold text-lg text-green-400">78%</span>
-                                    </div>
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-sm">Accessibility</span>
-                                        <span class="font-bold text-lg text-green-400">85%</span>
-                                    </div>
+                                    <div class="flex justify-between items-center"><span class="text-sm">Performance</span><span class="font-bold text-lg text-green-400">78%</span></div>
+                                    <div class="flex justify-between items-center"><span class="text-sm">Accessibility</span><span class="font-bold text-lg text-green-400">85%</span></div>
                                 </div>
                             </div>
-                            <!-- Recomendaciones -->
                             <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
                                 <h3 class="font-semibold mb-3 text-slate-300">Top Recommendations</h3>
                                 <ul class="text-sm space-y-2 text-slate-400 list-disc list-inside">
@@ -158,24 +139,16 @@
                                     <li>Ensure button style consistency.</li>
                                 </ul>
                             </div>
-                            <!-- Mockup Antes y Después -->
                             <div class="col-span-1 md:col-span-2 bg-slate-900/50 p-4 rounded-lg border border-slate-700">
                                 <h3 class="font-semibold mb-3 text-slate-300">Visual Improvement Example</h3>
                                 <div class="flex justify-around items-center">
-                                    <div class="text-center">
-                                        <p class="text-xs mb-2 text-slate-500">Before</p>
-                                        <button class="px-4 py-2 text-sm rounded-md bg-slate-600 text-slate-300 cursor-not-allowed">Learn More</button>
-                                    </div>
+                                    <div class="text-center"><p class="text-xs mb-2 text-slate-500">Before</p><button class="px-4 py-2 text-sm rounded-md bg-slate-600 text-slate-300 cursor-not-allowed">Learn More</button></div>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                                    <div class="text-center">
-                                        <p class="text-xs mb-2 text-slate-400">After</p>
-                                        <button class="px-5 py-2 text-sm font-semibold rounded-md bg-blue-600 text-white shadow-lg shadow-blue-500/30">Learn More</button>
-                                    </div>
+                                    <div class="text-center"><p class="text-xs mb-2 text-slate-400">After</p><button class="px-5 py-2 text-sm font-semibold rounded-md bg-blue-600 text-white shadow-lg shadow-blue-500/30">Learn More</button></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </main>
 
@@ -199,8 +172,14 @@
                          <input type="email" id="email-input" required placeholder="your-email@company.com" class="w-full px-4 py-3 rounded-md bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-sky-500 focus:outline-none transition duration-200" />
                     </div>
                     <div>
-                        <button type="submit" class="w-full px-6 py-3 font-semibold rounded-md text-white bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-sky-500 transition-transform transform hover:scale-105">
-                            Join Early Access
+                        <!-- Botón actualizado con spinner -->
+                        <button type="submit" class="w-full px-6 py-3 font-semibold rounded-md text-white bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-sky-500 transition-transform transform hover:scale-105 flex items-center justify-center">
+                            <span class="button-text">Join Early Access</span>
+                            <!-- Spinner SVG - inicialmente oculto -->
+                            <svg class="animate-spin h-5 w-5 text-white hidden button-spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
                         </button>
                     </div>
                 </form>
@@ -213,7 +192,6 @@
             </section>
         </div>
         
-        <!-- Footer -->
         <footer class="text-center py-8 border-t border-slate-800 mt-12">
             <p class="text-slate-500 text-sm">&copy; 2025 UX Audit Pro. All rights reserved.</p>
         </footer>
@@ -222,113 +200,51 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Lógica para la capa de degradado ---
             const fadeOverlay = document.getElementById('header-fade-overlay');
             window.addEventListener('scroll', () => {
                 const scrollY = window.scrollY;
-                const fadeDistance = 400; // Distancia en píxeles para el desvanecimiento
+                const fadeDistance = 400;
                 const opacity = Math.max(0, 1 - scrollY / fadeDistance);
                 fadeOverlay.style.opacity = opacity;
             });
 
-            // --- 3D Background Setup ---
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({
-                canvas: document.querySelector('#bg-3d-animation'),
-                alpha: true
-            });
+            const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('#bg-3d-animation'), alpha: true });
             const clock = new THREE.Clock();
-
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.setSize(window.innerWidth, window.innerHeight);
             camera.position.setZ(25);
 
-            // Shaders for the morphing effect
             const vertexShader = `
-                uniform float u_time;
-                uniform float u_intensity;
-
-                // 2D simplex noise function
+                uniform float u_time; uniform float u_intensity;
                 vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
                 vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
                 vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
-                float snoise(vec2 v) {
-                    const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
-                    vec2 i  = floor(v + dot(v, C.yy) );
-                    vec2 x0 = v -   i + dot(i, C.xx);
-                    vec2 i1;
-                    i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-                    vec4 x12 = x0.xyxy + C.xxzz;
-                    x12.xy -= i1;
-                    i = mod289(i);
-                    vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 )) + i.x + vec3(0.0, i1.x, 1.0 ));
-                    vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
-                    m = m*m;
-                    m = m*m;
-                    vec3 x = 2.0 * fract(p * C.www) - 1.0;
-                    vec3 h = abs(x) - 0.5;
-                    vec3 ox = floor(x + 0.5);
-                    vec3 a0 = x - ox;
-                    m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
-                    vec3 g;
-                    g.x  = a0.x  * x0.x  + h.x  * x0.y;
-                    g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-                    return 130.0 * dot(m, g);
-                }
-
-                void main() {
-                    vec3 newPosition = position;
-                    float noise = snoise(position.xy + u_time * 0.2) * u_intensity * 2.0;
-                    newPosition += normal * noise;
-                    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
-                }
+                float snoise(vec2 v) { const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439); vec2 i  = floor(v + dot(v, C.yy) ); vec2 x0 = v -   i + dot(i, C.xx); vec2 i1; i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0); vec4 x12 = x0.xyxy + C.xxzz; x12.xy -= i1; i = mod289(i); vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 )) + i.x + vec3(0.0, i1.x, 1.0 )); vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0); m = m*m; m = m*m; vec3 x = 2.0 * fract(p * C.www) - 1.0; vec3 h = abs(x) - 0.5; vec3 ox = floor(x + 0.5); vec3 a0 = x - ox; m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h ); vec3 g; g.x  = a0.x  * x0.x  + h.x  * x0.y; g.yz = a0.yz * x12.xz + h.yz * x12.yw; return 130.0 * dot(m, g); }
+                void main() { vec3 newPosition = position; float noise = snoise(position.xy + u_time * 0.2) * u_intensity * 2.0; newPosition += normal * noise; gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0); }
             `;
-            const fragmentShader = `
-                void main() {
-                    gl_FragColor = vec4(vec3(0.22, 0.51, 0.98), 0.2); // blue-500 with alpha
-                }
-            `;
-
+            const fragmentShader = `void main() { gl_FragColor = vec4(vec3(0.22, 0.51, 0.98), 0.2); }`;
             const geometry = new THREE.IcosahedronGeometry(10, 64);
-            const material = new THREE.ShaderMaterial({
-                vertexShader,
-                fragmentShader,
-                uniforms: {
-                    u_time: { value: 0.0 },
-                    u_intensity: { value: 0.0 }
-                },
-                wireframe: true,
-                transparent: true
-            });
-
+            const material = new THREE.ShaderMaterial({ vertexShader, fragmentShader, uniforms: { u_time: { value: 0.0 }, u_intensity: { value: 0.0 } }, wireframe: true, transparent: true });
             const mesh = new THREE.Mesh(geometry, material);
             scene.add(mesh);
-
             function animate3D() {
                 requestAnimationFrame(animate3D);
-
                 const elapsedTime = clock.getElapsedTime();
                 material.uniforms.u_time.value = elapsedTime;
-                // Create a smooth looping animation for the intensity (chaos -> smooth -> chaos)
                 material.uniforms.u_intensity.value = (Math.sin(elapsedTime * 0.2) + 1.0) / 2.0;
-
                 mesh.rotation.x = elapsedTime * 0.05;
                 mesh.rotation.y = elapsedTime * 0.05;
-
                 renderer.render(scene, camera);
             }
-            
             animate3D();
-
             window.addEventListener('resize', () => {
                 camera.aspect = window.innerWidth / window.innerHeight;
                 camera.updateProjectionMatrix();
                 renderer.setSize(window.innerWidth, window.innerHeight);
             });
 
-
-            // --- Demo & Form Logic (No changes here) ---
             const inputScreen = document.getElementById('input-screen');
             const loadingScreen = document.getElementById('loading-screen');
             const outputScreen = document.getElementById('output-screen');
@@ -338,56 +254,29 @@
             const roleSelect = document.getElementById('role-select');
             const screens = [inputScreen, loadingScreen, outputScreen];
             const urlToType = 'www.yourwebsite.com';
-            
             let currentScreen = 0;
-
-            function switchScreen(nextScreenIndex) {
-                screens.forEach((screen, index) => {
-                    screen.style.opacity = (index === nextScreenIndex) ? '1' : '0';
-                    if (index === nextScreenIndex) screen.classList.add('fade-in');
-                    else screen.classList.remove('fade-in');
-                });
-                currentScreen = nextScreenIndex;
-            }
-
-            function typeEffect() {
-                let i = 0;
-                typingTextEl.innerHTML = '';
-                const typingInterval = setInterval(() => {
-                    if (i < urlToType.length) {
-                        typingTextEl.innerHTML += urlToType.charAt(i);
-                        i++;
-                    } else {
-                        clearInterval(typingInterval);
-                    }
-                }, 80);
-            }
-
-            function startDemoLoop() {
-                switchScreen(0);
-                typeEffect();
-                setTimeout(() => switchScreen(1), 3000);
-                setTimeout(() => switchScreen(2), 5000);
-                setTimeout(startDemoLoop, 10000);
-            }
-
+            function switchScreen(nextScreenIndex) { screens.forEach((screen, index) => { screen.style.opacity = (index === nextScreenIndex) ? '1' : '0'; if (index === nextScreenIndex) screen.classList.add('fade-in'); else screen.classList.remove('fade-in'); }); currentScreen = nextScreenIndex; }
+            function typeEffect() { let i = 0; typingTextEl.innerHTML = ''; const typingInterval = setInterval(() => { if (i < urlToType.length) { typingTextEl.innerHTML += urlToType.charAt(i); i++; } else { clearInterval(typingInterval); } }, 80); }
+            function startDemoLoop() { switchScreen(0); typeEffect(); setTimeout(() => switchScreen(1), 3000); setTimeout(() => switchScreen(2), 5000); setTimeout(startDemoLoop, 10000); }
             startDemoLoop();
 
+            // --- Lógica del formulario actualizada ---
             waitlistForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const nameInput = document.getElementById('name-input');
                 const emailInput = document.getElementById('email-input');
                 const submitButton = waitlistForm.querySelector('button[type="submit"]');
+                const buttonText = submitButton.querySelector('.button-text');
+                const buttonSpinner = submitButton.querySelector('.button-spinner');
                 const errorMessage = document.getElementById('error-message');
                 const webhookURL = 'https://hook.us2.make.com/bvox29azbih8s4bbvll8w6hm5l7sbhf8';
-                const formData = {
-                    name: nameInput.value,
-                    role: role-select.value,
-                    email: emailInput.value
-                };
+                
+                const formData = { name: nameInput.value, role: roleSelect.value, email: emailInput.value };
 
+                // Mostrar feedback de carga
                 submitButton.disabled = true;
-                submitButton.textContent = 'Sending...';
+                buttonText.classList.add('hidden');
+                buttonSpinner.classList.remove('hidden');
                 errorMessage.classList.add('hidden');
 
                 fetch(webhookURL, {
@@ -408,8 +297,10 @@
                 .catch(error => {
                     console.error('Error:', error);
                     errorMessage.classList.remove('hidden');
+                    // Restaurar botón en caso de error
                     submitButton.disabled = false;
-                    submitButton.textContent = 'Join Early Access';
+                    buttonText.classList.remove('hidden');
+                    buttonSpinner.classList.add('hidden');
                 });
             });
 
