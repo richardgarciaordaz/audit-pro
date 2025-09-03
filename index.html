@@ -5,12 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UX Audit Pro - Get Professional UX/UI Audits in Minutes</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
+        }
+        #bg-3d-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; 
+        }
+        /* Nueva capa de degradado para la legibilidad del encabezado */
+        #header-fade-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: radial-gradient(ellipse at 50% 0%, rgba(15, 23, 42, 0.95) 10%, rgba(15, 23, 42, 0) 70%);
+            z-index: 1;
+            pointer-events: none; /* Permite hacer clic a través de la capa */
+            transition: opacity 0.3s ease-out;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 2; /* Asegura que el contenido esté por encima de la capa de degradado */
         }
         /* Estilos para la animación de escritura en el input */
         .typing-effect {
@@ -62,161 +87,265 @@
 </head>
 <body class="bg-slate-900 text-slate-200 antialiased">
 
-    <div class="container mx-auto px-6 py-12 md:py-20 text-center">
+    <canvas id="bg-3d-animation"></canvas>
+    <div id="header-fade-overlay"></div>
 
-        <!-- Encabezado y Propuesta de Valor -->
-        <header class="max-w-3xl mx-auto mb-12">
-            <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-500 mb-4">
-                Get Professional UX/UI Audits in Minutes, Not Hours
-            </h1>
-            <p class="text-lg md:text-xl text-slate-400">
-                AI-powered tool that saves 10+ hours of manual auditing and delivers actionable reports instantly.
-            </p>
-        </header>
+    <div class="content-wrapper">
+        <div class="container mx-auto px-6 py-12 md:py-20 text-center">
 
-        <!-- Demo Interactiva -->
-        <main class="max-w-2xl mx-auto bg-slate-800/50 rounded-xl shadow-2xl shadow-blue-500/10 p-4 md:p-6 border border-slate-700">
-            <div id="demo-container" class="relative w-full h-96 overflow-hidden">
+            <!-- Encabezado y Propuesta de Valor -->
+            <header class="max-w-3xl mx-auto mb-12">
+                <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-500 mb-4">
+                    Get Professional UX/UI Audits in Minutes, Not Hours
+                </h1>
+                <p class="text-lg md:text-xl text-slate-400">
+                    AI-powered tool that saves 10+ hours of manual auditing and delivers actionable reports instantly.
+                </p>
+            </header>
 
-                <!-- 1. Pantalla de Input -->
-                <div id="input-screen" class="absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 opacity-100">
-                    <div class="w-full max-w-md bg-slate-900 rounded-lg p-4 border border-slate-700">
-                        <div class="flex items-center space-x-1.5 mb-3">
-                            <span class="w-3 h-3 bg-red-500 rounded-full"></span>
-                            <span class="w-3 h-3 bg-yellow-400 rounded-full"></span>
-                            <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+            <!-- Demo Interactiva -->
+            <main class="max-w-2xl mx-auto bg-slate-800/50 rounded-xl shadow-2xl shadow-blue-500/10 p-4 md:p-6 border border-slate-700 backdrop-blur-sm">
+                <div id="demo-container" class="relative w-full h-96 overflow-hidden">
+
+                    <!-- 1. Pantalla de Input -->
+                    <div id="input-screen" class="absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 opacity-100">
+                        <div class="w-full max-w-md bg-slate-900 rounded-lg p-4 border border-slate-700">
+                            <div class="flex items-center space-x-1.5 mb-3">
+                                <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                                <span class="w-3 h-3 bg-yellow-400 rounded-full"></span>
+                                <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                            </div>
+                            <div class="bg-slate-800 rounded p-2 text-left text-sky-400 font-mono text-sm">
+                                <span id="typing-text"></span><span class="animate-ping">|</span>
+                            </div>
                         </div>
-                        <div class="bg-slate-800 rounded p-2 text-left text-sky-400 font-mono text-sm">
-                            <span id="typing-text"></span><span class="animate-ping">|</span>
+                        <p class="text-slate-500 mt-4 text-sm">Enter a URL to start the audit</p>
+                    </div>
+
+                    <!-- 2. Pantalla de Carga -->
+                    <div id="loading-screen" class="absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 opacity-0">
+                        <div class="flex space-x-2">
+                            <div class="loader-dot w-4 h-4 bg-blue-500 rounded-full"></div>
+                            <div class="loader-dot w-4 h-4 bg-blue-500 rounded-full"></div>
+                            <div class="loader-dot w-4 h-4 bg-blue-500 rounded-full"></div>
                         </div>
+                        <p class="text-slate-400 mt-4">Analyzing your website...</p>
                     </div>
-                    <p class="text-slate-500 mt-4 text-sm">Enter a URL to start the audit</p>
-                </div>
 
-                <!-- 2. Pantalla de Carga -->
-                <div id="loading-screen" class="absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 opacity-0">
-                    <div class="flex space-x-2">
-                        <div class="loader-dot w-4 h-4 bg-blue-500 rounded-full"></div>
-                        <div class="loader-dot w-4 h-4 bg-blue-500 rounded-full"></div>
-                        <div class="loader-dot w-4 h-4 bg-blue-500 rounded-full"></div>
-                    </div>
-                    <p class="text-slate-400 mt-4">Analyzing your website...</p>
-                </div>
-
-                <!-- 3. Pantalla de Resultados -->
-                <div id="output-screen" class="absolute inset-0 flex flex-col items-center transition-opacity duration-500 opacity-0 p-4 overflow-y-auto custom-scrollbar">
-                    <div class="w-full text-left grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Scores -->
-                        <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
-                            <h3 class="font-semibold mb-3 text-slate-300">Audit Score</h3>
-                            <div class="space-y-3">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm">Performance</span>
-                                    <span class="font-bold text-lg text-green-400">78%</span>
+                    <!-- 3. Pantalla de Resultados -->
+                    <div id="output-screen" class="absolute inset-0 flex flex-col items-center transition-opacity duration-500 opacity-0 p-4 overflow-y-auto custom-scrollbar">
+                        <div class="w-full text-left grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Scores -->
+                            <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+                                <h3 class="font-semibold mb-3 text-slate-300">Audit Score</h3>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm">Performance</span>
+                                        <span class="font-bold text-lg text-green-400">78%</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm">Accessibility</span>
+                                        <span class="font-bold text-lg text-green-400">85%</span>
+                                    </div>
                                 </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm">Accessibility</span>
-                                    <span class="font-bold text-lg text-green-400">85%</span>
+                            </div>
+                            <!-- Recomendaciones -->
+                            <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+                                <h3 class="font-semibold mb-3 text-slate-300">Top Recommendations</h3>
+                                <ul class="text-sm space-y-2 text-slate-400 list-disc list-inside">
+                                    <li>Clarify headline value proposition.</li>
+                                    <li>Improve CTA hierarchy.</li>
+                                    <li>Ensure button style consistency.</li>
+                                </ul>
+                            </div>
+                            <!-- Mockup Antes y Después -->
+                            <div class="col-span-1 md:col-span-2 bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+                                <h3 class="font-semibold mb-3 text-slate-300">Visual Improvement Example</h3>
+                                <div class="flex justify-around items-center">
+                                    <div class="text-center">
+                                        <p class="text-xs mb-2 text-slate-500">Before</p>
+                                        <button class="px-4 py-2 text-sm rounded-md bg-slate-600 text-slate-300 cursor-not-allowed">Learn More</button>
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                                    <div class="text-center">
+                                        <p class="text-xs mb-2 text-slate-400">After</p>
+                                        <button class="px-5 py-2 text-sm font-semibold rounded-md bg-blue-600 text-white shadow-lg shadow-blue-500/30">Learn More</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- Recomendaciones -->
-                        <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
-                            <h3 class="font-semibold mb-3 text-slate-300">Top Recommendations</h3>
-                            <ul class="text-sm space-y-2 text-slate-400 list-disc list-inside">
-                                <li>Clarify headline value proposition.</li>
-                                <li>Improve CTA hierarchy.</li>
-                                <li>Ensure button style consistency.</li>
-                            </ul>
-                        </div>
-                        <!-- Mockup Antes y Después -->
-                        <div class="col-span-1 md:col-span-2 bg-slate-900/50 p-4 rounded-lg border border-slate-700">
-                            <h3 class="font-semibold mb-3 text-slate-300">Visual Improvement Example</h3>
-                            <div class="flex justify-around items-center">
-                                <div class="text-center">
-                                    <p class="text-xs mb-2 text-slate-500">Before</p>
-                                    <button class="px-4 py-2 text-sm rounded-md bg-slate-600 text-slate-300 cursor-not-allowed">Learn More</button>
-                                </div>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                                <div class="text-center">
-                                    <p class="text-xs mb-2 text-slate-400">After</p>
-                                    <button class="px-5 py-2 text-sm font-semibold rounded-md bg-blue-600 text-white shadow-lg shadow-blue-500/30">Learn More</button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                </div>
 
-            </div>
-        </main>
+                </div>
+            </main>
 
-        <!-- Waitlist Form -->
-        <section class="max-w-xl mx-auto mt-12">
-            <h2 class="text-xl font-bold mb-2">Be the first to get access</h2>
-            <p class="text-slate-400 mb-6">Join the waitlist and get notified when UX Audit Pro is ready.</p>
-            <form id="waitlist-form" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" id="name-input" placeholder="Your Name" class="w-full px-4 py-3 rounded-md bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-sky-500 focus:outline-none transition duration-200" />
-                    <select id="role-select" class="w-full px-4 py-3 rounded-md bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-sky-500 focus:outline-none transition duration-200 text-slate-400">
-                        <option value="" disabled selected>What is your role?</option>
-                        <option value="designer" class="text-slate-200 bg-slate-800">UX/UI Designer</option>
-                        <option value="pm" class="text-slate-200 bg-slate-800">Product Manager</option>
-                        <option value="developer" class="text-slate-200 bg-slate-800">Developer</option>
-                        <option value="founder" class="text-slate-200 bg-slate-800">Founder</option>
-                        <option value="other" class="text-slate-200 bg-slate-800">Other</option>
-                    </select>
+            <!-- Waitlist Form -->
+            <section class="max-w-xl mx-auto mt-12">
+                <h2 class="text-xl font-bold mb-2">Be the first to get access</h2>
+                <p class="text-slate-400 mb-6">Join the waitlist and get notified when UX Audit Pro is ready.</p>
+                <form id="waitlist-form" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="text" id="name-input" placeholder="Your Name" class="w-full px-4 py-3 rounded-md bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-sky-500 focus:outline-none transition duration-200" />
+                        <select id="role-select" class="w-full px-4 py-3 rounded-md bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-sky-500 focus:outline-none transition duration-200 text-slate-400">
+                            <option value="" disabled selected>What is your role?</option>
+                            <option value="designer" class="text-slate-200 bg-slate-800">UX/UI Designer</option>
+                            <option value="pm" class="text-slate-200 bg-slate-800">Product Manager</option>
+                            <option value="developer" class="text-slate-200 bg-slate-800">Developer</option>
+                            <option value="founder" class="text-slate-200 bg-slate-800">Founder</option>
+                            <option value="other" class="text-slate-200 bg-slate-800">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                         <input type="email" id="email-input" required placeholder="your-email@company.com" class="w-full px-4 py-3 rounded-md bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-sky-500 focus:outline-none transition duration-200" />
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full px-6 py-3 font-semibold rounded-md text-white bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-sky-500 transition-transform transform hover:scale-105">
+                            Join Early Access
+                        </button>
+                    </div>
+                </form>
+                <div id="confirmation-message" class="hidden mt-4 px-4 py-3 rounded-md bg-green-500/10 text-green-400 border border-green-500/20">
+                    Thanks for joining! We'll be in touch soon.
                 </div>
-                <div>
-                     <input type="email" id="email-input" required placeholder="your-email@company.com" class="w-full px-4 py-3 rounded-md bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-sky-500 focus:outline-none transition duration-200" />
+                <div id="error-message" class="hidden mt-4 px-4 py-3 rounded-md bg-red-500/10 text-red-400 border border-red-500/20">
+                    Oops! Something went wrong. Please try again.
                 </div>
-                <div>
-                    <button type="submit" class="w-full px-6 py-3 font-semibold rounded-md text-white bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-sky-500 transition-transform transform hover:scale-105">
-                        Join Early Access
-                    </button>
-                </div>
-            </form>
-            <div id="confirmation-message" class="hidden mt-4 px-4 py-3 rounded-md bg-green-500/10 text-green-400 border border-green-500/20">
-                Thanks for joining! We'll be in touch soon.
-            </div>
-            <div id="error-message" class="hidden mt-4 px-4 py-3 rounded-md bg-red-500/10 text-red-400 border border-red-500/20">
-                Oops! Something went wrong. Please try again.
-            </div>
-        </section>
-
+            </section>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="text-center py-8 border-t border-slate-800 mt-12">
+            <p class="text-slate-500 text-sm">&copy; 2025 UX Audit Pro. All rights reserved.</p>
+        </footer>
     </div>
 
-    <!-- Footer -->
-    <footer class="text-center py-8 border-t border-slate-800 mt-12">
-        <p class="text-slate-500 text-sm">&copy; 2025 UX Audit Pro. All rights reserved.</p>
-    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // DOM Elements
+            // --- Lógica para la capa de degradado ---
+            const fadeOverlay = document.getElementById('header-fade-overlay');
+            window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
+                const fadeDistance = 400; // Distancia en píxeles para el desvanecimiento
+                const opacity = Math.max(0, 1 - scrollY / fadeDistance);
+                fadeOverlay.style.opacity = opacity;
+            });
+
+            // --- 3D Background Setup ---
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({
+                canvas: document.querySelector('#bg-3d-animation'),
+                alpha: true
+            });
+            const clock = new THREE.Clock();
+
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.position.setZ(25);
+
+            // Shaders for the morphing effect
+            const vertexShader = `
+                uniform float u_time;
+                uniform float u_intensity;
+
+                // 2D simplex noise function
+                vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+                vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+                vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
+                float snoise(vec2 v) {
+                    const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+                    vec2 i  = floor(v + dot(v, C.yy) );
+                    vec2 x0 = v -   i + dot(i, C.xx);
+                    vec2 i1;
+                    i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+                    vec4 x12 = x0.xyxy + C.xxzz;
+                    x12.xy -= i1;
+                    i = mod289(i);
+                    vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 )) + i.x + vec3(0.0, i1.x, 1.0 ));
+                    vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+                    m = m*m;
+                    m = m*m;
+                    vec3 x = 2.0 * fract(p * C.www) - 1.0;
+                    vec3 h = abs(x) - 0.5;
+                    vec3 ox = floor(x + 0.5);
+                    vec3 a0 = x - ox;
+                    m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+                    vec3 g;
+                    g.x  = a0.x  * x0.x  + h.x  * x0.y;
+                    g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+                    return 130.0 * dot(m, g);
+                }
+
+                void main() {
+                    vec3 newPosition = position;
+                    float noise = snoise(position.xy + u_time * 0.2) * u_intensity * 2.0;
+                    newPosition += normal * noise;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+                }
+            `;
+            const fragmentShader = `
+                void main() {
+                    gl_FragColor = vec4(vec3(0.22, 0.51, 0.98), 0.2); // blue-500 with alpha
+                }
+            `;
+
+            const geometry = new THREE.IcosahedronGeometry(10, 64);
+            const material = new THREE.ShaderMaterial({
+                vertexShader,
+                fragmentShader,
+                uniforms: {
+                    u_time: { value: 0.0 },
+                    u_intensity: { value: 0.0 }
+                },
+                wireframe: true,
+                transparent: true
+            });
+
+            const mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+            function animate3D() {
+                requestAnimationFrame(animate3D);
+
+                const elapsedTime = clock.getElapsedTime();
+                material.uniforms.u_time.value = elapsedTime;
+                // Create a smooth looping animation for the intensity (chaos -> smooth -> chaos)
+                material.uniforms.u_intensity.value = (Math.sin(elapsedTime * 0.2) + 1.0) / 2.0;
+
+                mesh.rotation.x = elapsedTime * 0.05;
+                mesh.rotation.y = elapsedTime * 0.05;
+
+                renderer.render(scene, camera);
+            }
+            
+            animate3D();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+
+            // --- Demo & Form Logic (No changes here) ---
             const inputScreen = document.getElementById('input-screen');
             const loadingScreen = document.getElementById('loading-screen');
             const outputScreen = document.getElementById('output-screen');
             const typingTextEl = document.getElementById('typing-text');
-
             const waitlistForm = document.getElementById('waitlist-form');
             const confirmationMessage = document.getElementById('confirmation-message');
             const roleSelect = document.getElementById('role-select');
-
             const screens = [inputScreen, loadingScreen, outputScreen];
             const urlToType = 'www.yourwebsite.com';
             
-            // Demo animation logic
             let currentScreen = 0;
 
             function switchScreen(nextScreenIndex) {
                 screens.forEach((screen, index) => {
-                    if (index === nextScreenIndex) {
-                        screen.style.opacity = '1';
-                        screen.classList.add('fade-in');
-                    } else {
-                        screen.style.opacity = '0';
-                        screen.classList.remove('fade-in');
-                    }
+                    screen.style.opacity = (index === nextScreenIndex) ? '1' : '0';
+                    if (index === nextScreenIndex) screen.classList.add('fade-in');
+                    else screen.classList.remove('fade-in');
                 });
                 currentScreen = nextScreenIndex;
             }
@@ -235,80 +364,55 @@
             }
 
             function startDemoLoop() {
-                // 1. Show Input
                 switchScreen(0);
                 typeEffect();
-
-                // 2. Transition to Loading
-                setTimeout(() => {
-                    switchScreen(1);
-                }, 3000); // Input screen duration
-
-                // 3. Transition to Output
-                setTimeout(() => {
-                    switchScreen(2);
-                }, 5000); // Loading screen duration
-
-                // 4. Restart loop
-                setTimeout(startDemoLoop, 10000); // Total cycle duration
+                setTimeout(() => switchScreen(1), 3000);
+                setTimeout(() => switchScreen(2), 5000);
+                setTimeout(startDemoLoop, 10000);
             }
 
-            // Start demo loop
             startDemoLoop();
 
-            // Waitlist form logic
             waitlistForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-
                 const nameInput = document.getElementById('name-input');
                 const emailInput = document.getElementById('email-input');
                 const submitButton = waitlistForm.querySelector('button[type="submit"]');
                 const errorMessage = document.getElementById('error-message');
-
-                // --- URL del Webhook de Make.com actualizada ---
                 const webhookURL = 'https://hook.us2.make.com/bvox29azbih8s4bbvll8w6hm5l7sbhf8';
-
                 const formData = {
                     name: nameInput.value,
-                    role: roleSelect.value,
+                    role: role-select.value,
                     email: emailInput.value
                 };
 
-                // Disable button and show loading state
                 submitButton.disabled = true;
                 submitButton.textContent = 'Sending...';
                 errorMessage.classList.add('hidden');
 
                 fetch(webhookURL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(formData),
                 })
                 .then(response => {
-                    if (response.ok) {
-                        return response.text();
-                    }
-                    throw new Error('Network response was not ok.');
+                    if (!response.ok) throw new Error('Network response was not ok.');
+                    return response.text();
                 })
                 .then(data => {
                     console.log('Success:', data);
-                    // Show confirmation message on success
                     waitlistForm.classList.add('hidden');
                     confirmationMessage.classList.remove('hidden');
                     confirmationMessage.classList.add('fade-in');
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    // Show error message and re-enable button
                     errorMessage.classList.remove('hidden');
                     submitButton.disabled = false;
                     submitButton.textContent = 'Join Early Access';
                 });
             });
 
-            // Change select color on option selection
             roleSelect.addEventListener('change', () => {
                 if (roleSelect.value) {
                     roleSelect.classList.remove('text-slate-400');
